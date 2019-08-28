@@ -22,7 +22,7 @@ public struct CommandLine
     public ushort port;
 
     public string txhash;
-    public size_t index;
+    public uint index;
 
     public string key;
 
@@ -41,7 +41,7 @@ public GetoptResult parseCommandLine (ref CommandLine cmdline, string[] args)
 
         "port|p",
             "Port of node",
-            &cmdline.host,
+            &cmdline.port,
 
         "txhash|x",
             "Hash of input transaction",
@@ -57,6 +57,10 @@ public GetoptResult parseCommandLine (ref CommandLine cmdline, string[] args)
 
         "address|t",
             "destination address",
-            &cmdline.address
+            &cmdline.address,
+
+        "key|k",
+            "seed of key",
+            &cmdline.key
             );
 }
