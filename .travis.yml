@@ -1,0 +1,44 @@
+language: d
+
+d:
+  - dmd-2.086.1 # Pinned due to https://issues.dlang.org/show_bug.cgi?id=20022
+  - ldc-1.16.0  # Older version don't work
+  - dmd-2.085.1
+
+os:
+  - linux
+  - osx
+
+# `brew install` is the slowest thing ever on OSX
+# It takes at least 6 minutes to run
+# Note: The cache should be cleaned up from time to time,
+# as older packages will persist, but given the frequency
+# of release this is not an immediate concern
+cache:
+  directories:
+    - $HOME/Library/Caches/Homebrew
+    - /usr/local/Homebrew
+
+# We need a fairly recent compiler for SCP
+# Namely one with N4387 fixed
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libsodium-dev
+      - g++-9
+
+env:
+  - PATH=$HOME/bin/:$PATH
+
+# No way to install the apt package, so...
+before_install:
+  - if [ "$TRAVIS_OS_NAME" = "osx" ];   then brew install libsodium; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then mkdir -p $HOME/bin/; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ln -s `which gcc-9` $HOME/bin/gcc; fi # /usr/bin/gcc-9
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ln -s `which g++-9` $HOME/bin/g++; fi # /usr/bin/g++-9
+
+script:
+  - dub build --skip-registry=all --compiler=${DC}
+  - dub test --skip-registry=all --compiler=${DC}

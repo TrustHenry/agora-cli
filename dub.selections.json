@@ -1,0 +1,21 @@
+{
+	"fileVersion": 1,
+	"versions": {
+		"base32": {"path":"submodules/base32/"},
+		"bitblob": {"path":"submodules/bitblob/"},
+		"botan": "1.12.10",
+		"botan-math": "1.0.3",
+		"diet-ng": "1.6.0",
+		"eventcore": "0.8.46",
+		"libasync": "0.8.4",
+		"libevent": "2.0.2+2.0.16",
+		"libsodiumd": {"path":"submodules/libsodiumd/"},
+		"memutils": "0.4.13",
+		"mir-linux-kernel": "1.0.1",
+		"openssl": "1.1.6+1.0.1g",
+		"stdx-allocator": "2.77.5",
+		"taggedalgebraic": "0.11.4",
+		"vibe-core": "1.7.0-rc.2",
+		"vibe-d": {"path":"submodules/vibe.d/"}
+	}
+}

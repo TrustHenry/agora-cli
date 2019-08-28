@@ -1,0 +1,23 @@
+# Executables
+*.exe	*.exe
+build/
+
+
+ # DUB	# DUB
+.dub	.dub
+@@ -22,3 +23,11 @@ docs/
+
+
+ # Code coverage	# Code coverage
+*.lst	*.lst
+*-test-library
+*-test-application
+
+ # Code coverage
+*.lst
+
+ # Emacs
+*~
+
+# Visual Studio Code
+.vscode

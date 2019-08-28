@@ -1,0 +1,15 @@
+[submodule "submodules/base32"]
+	path = submodules/base32
+	url = https://github.com/bpfkorea/d-base32.git
+[submodule "submodules/bitblob"]
+	path = submodules/bitblob
+	url = https://github.com/Geod24/bitblob.git
+[submodule "submodules/libsodiumd"]
+	path = submodules/libsodiumd
+	url = https://github.com/Geod24/libsodiumd.git
+[submodule "submodules/vibe-core"]
+	path = submodules/vibe-core
+	url = https://github.com/vibe-d/vibe-core.git
+[submodule "submodules/vibe.d"]
+	path = submodules/vibe.d
+	url = https://github.com/bpfkorea/vibe.d.git

@@ -1,0 +1,22 @@
+{
+    "name": "agora-cli",
+    "description": "Comand line interface for BOA CoinNet",
+
+    "license": "MIT",
+    "authors": [
+        "Mathias 'Geod24' Lang"
+    ],
+    "copyright": "Copyright © 2019, BOS Platform Foundation Korea",
+
+    "targetType": "executable",
+    "targetPath": "build",
+
+    "mainSourceFile": "source/agora/cli/main.d",
+
+    "dependencies": {
+        "base32":       { "path": "submodules/base32/", "version": "*" },
+        "bitblob":      { "path": "submodules/bitblob/", "version": "*" },
+        "libsodiumd":   { "path": "submodules/libsodiumd/", "version": "*" },
+        "vibe-d":       { "path": "submodules/vibe.d/", "version": "*" }
+    }
+}
