@@ -17,6 +17,7 @@
         "base32":       { "path": "submodules/base32/", "version": "*" },
         "bitblob":      { "path": "submodules/bitblob/", "version": "*" },
         "libsodiumd":   { "path": "submodules/libsodiumd/", "version": "*" },
+        "localrest":        { "path": "submodules/localrest/", "version": "*" },
         "vibe-d":       { "path": "submodules/vibe.d/", "version": "*" }
     }
 }

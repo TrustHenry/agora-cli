@@ -13,82 +13,49 @@
 
 module agora.cli.main;
 
-import agora.cli.CommandLine;
-import agora.common.Amount;
-import agora.common.crypto.Key;
-import agora.common.Data;
-import agora.common.Hash;
-import agora.consensus.data.Block;
-import agora.consensus.data.Transaction;
+import agora.cli.CLIResult;
+import agora.cli.DefaultProcess;
+import agora.cli.SendTxProcess;
 import agora.node.API;
 
 import vibe.core.core;
 import vibe.web.rest;
 
-import std.format;
-import std.getopt;
 import std.stdio;
+
+/// Workaround for issue likely related to dub #225,
+/// expects a main() function and invokes it after unittesting.
+version (unittest) void main () { } else:
 
 /// Application entry point
 private int main (string[] args)
 {
-    try
-    {
-        sendTransaction(args);
+    string[] outputs;
+    auto res = runProcess(args, outputs);
 
-        return 0;
-    }
-    catch (Exception ex)
-    {
-        writefln("Failed to processing. Error: %s", ex.message);
-        return 1;
-    }
+    foreach(ref line; outputs)
+        writeln(line);
+
+    return res;
 }
 
-/*******************************************************************************
-
-    Input an arguments, generate the transaction and send it to the node
-
-    Params:
-        args = Cli command line arguments
-
-*******************************************************************************/
-
-public void sendTransaction (string[] args)
+///
+int runProcess (string[] args, ref string[] outputs)
 {
-    CommandLine cmd;
-
-    try
+    if (args.length < 2)
     {
-        auto help = parseCommandLine(cmd, args);
-        if (help.helpWanted)
-            defaultGetoptPrinter("The Agora cli", help.options);
-    }
-    catch (Exception ex)
-    {
-        writefln("Error parsing command-line arguments '%(%s %)': %s", args,
-            ex.message);
+        printDefaultHelp(outputs);
+        return CLI_SUCCESS;
     }
 
-    // create the transaction
-    Transaction transaction;
-    auto key_pair = KeyPair.fromSeed(Seed.fromString(cmd.key));
-    Hash pre_tx_hash = cmd.txhash;
-    Input input = Input(pre_tx_hash, cmd.index);
-
-    Transaction tx =
+    const string command = args[1];
+    switch (command)
     {
-        [input],
-        [Output(Amount(cmd.amount), key_pair.address)]
-    };
-
-    auto signature = key_pair.secret.sign(hashFull(tx)[]);
-    tx.inputs[cmd.index].signature = signature;
-
-    // connect to the node
-    string ip_address = format("http://%s:%s", cmd.host, cmd.port);
-    auto node = new RestInterfaceClient!API(ip_address);
-
-    // send the transaction
-    node.putTransaction(tx);
+        case "sendtx":
+            return sendTxProcess(args, outputs, (address) {
+                return new RestInterfaceClient!API(address);
+            });
+        default :
+            return defaultProcess(args, outputs);
+    }
 }
