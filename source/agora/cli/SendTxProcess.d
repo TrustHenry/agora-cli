@@ -51,6 +51,9 @@ private struct SendTxOption
 
     /// The amount to spend
     public ulong amount;
+
+    /// dump output option
+    public bool dump;
 }
 
 /// Parse the ommand-line arguments of sendtx (--version, --help)
@@ -84,14 +87,19 @@ public GetoptResult parseSendTxOption (ref SendTxOption op, string[] args)
 
         "key|k",
             "The seed used to sign the new transaction",
-            &op.key
+            &op.key,
+
+        "dump|o",
+            "dump output option",
+            &op.dump
             );
+
 }
 
 /// Print help
 public void printSendTxHelp (ref string[] outputs)
 {
-    outputs ~= "usage: agora-cli sendtx --ip --port --txhash --index --amount --dest --key";
+    outputs ~= "usage: agora-cli sendtx --ip --port --txhash --index --amount --dest --key --dump";
     outputs ~= "";
     outputs ~= "   sendtx      Send a transaction to node";
     outputs ~= "";
@@ -105,6 +113,7 @@ public void printSendTxHelp (ref string[] outputs)
     outputs ~= "        -a --amount  The amount to spend";
     outputs ~= "        -d --dest    The address key to send the output";
     outputs ~= "        -k --key     The seed used to sign the new transaction";
+    outputs ~= "        -o --dump    Dump output option";
     outputs ~= "";
 }
 
@@ -188,6 +197,16 @@ public int sendTxProcess (string[] args, ref string[] outputs,
 
     auto signature = key_pair.secret.sign(hashFull(tx)[]);
     tx.inputs[0].signature = signature;
+
+    if (op.dump)
+    {
+        outputs ~= format("txhash = %s", op.txhash);
+        outputs ~= format("index = %s", op.index);
+        outputs ~= format("amount = %s", op.amount);
+        outputs ~= format("address = %s", op.address);
+        outputs ~= format("key = %s", op.key);
+        outputs ~= format("hash of new transaction = %s", hashFull(tx).toString);
+    }
 
     // connect to the node
     string ip_address = format("http://%s:%s", op.host, op.port);

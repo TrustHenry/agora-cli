@@ -108,7 +108,8 @@ unittest
             format("--index=%d", index),
             format("--amount=%d", amount),
             format("--dest=%s", address),
-            format("--key=%s", key)
+            format("--key=%s", key),
+            "--dump"
         ];
     string[] outputs;
 
@@ -118,7 +119,6 @@ unittest
     });
     assert (res == CLI_SUCCESS);
 
-
     Transaction tx =
     {
         [Input(Hash.fromString(txhash), index)],
@@ -127,6 +127,9 @@ unittest
     Hash send_txhash = hashFull(tx);
     auto key_pair = KeyPair.fromSeed(Seed.fromString(key));
     tx.inputs[0].signature = key_pair.secret.sign(send_txhash[]);
+
+    foreach(ref line; outputs)
+        writeln(line);
 
     assert(node.hasTransactionHash(send_txhash));
 }
